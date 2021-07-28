@@ -17,7 +17,7 @@ app.use(fileUpload())
 
 app.get("/", async (req, res) => {
     const query = await pool.query("SELECT * FROM businesses")
-    res.send(query)
+    res.send(query.rows)
 })
 
 //MEMBERS TABLE
@@ -116,19 +116,6 @@ app.get("/users/:email", async (req, res) => {
         console.error(error.message)
     }
 })
-
-//update a user type when business is added:
-
-// app.put("/users/update/:email", async(req, res) => {
-//     try {
-//         const {email} = req.params
-//         const {user_type} = req.body
-
-//         const query = await pool.query("UPDATE users SET user_type=$1 WHERE email=$2", [user_type, email])
-//     } catch (error) {
-//         console.error(error.message)
-//     }
-// })
 
 //create a business
 
