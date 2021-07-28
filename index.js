@@ -188,7 +188,7 @@ app.get("business/getImage/:email", async(req, res) => {
 app.get("/businesses", async(req, res) => {
     try {
         const allBusinesses = await pool.query("SELECT * FROM businesses ORDER BY num_members DESC");
-        res.json(allBusinesses.rows);
+        res.send(allBusinesses.rows);
     } catch (error) {
         console.error(error.message);
     }
