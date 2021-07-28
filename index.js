@@ -15,6 +15,10 @@ app.use(fileUpload())
 
 //ROUTES//
 
+app.get("/", (req, res) => {
+    res.send("Hello World")
+})
+
 //MEMBERS TABLE
 
 app.post("/becomeMember/", async (req, res) => {
