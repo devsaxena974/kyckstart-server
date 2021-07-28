@@ -15,8 +15,9 @@ app.use(fileUpload())
 
 //ROUTES//
 
-app.get("/", (req, res) => {
-    res.send("Hello World")
+app.get("/", async (req, res) => {
+    const query = await pool.query("SELECT * FROM businesses")
+    res.send(query)
 })
 
 //MEMBERS TABLE
