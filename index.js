@@ -19,11 +19,6 @@ app.use(function (req, res, next) {
 
 //ROUTES//
 
-app.get("/", async (req, res) => {
-    const query = await pool.query("SELECT * FROM businesses")
-    res.send(query.rows)
-})
-
 //MEMBERS TABLE
 
 app.post("/becomeMember/", async (req, res) => {
@@ -183,7 +178,7 @@ app.get("business/getImage/:email", async(req, res) => {
 
 app.get("/businesses", async(req, res) => {
     try {
-        // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000/')
         const allBusinesses = await pool.query("SELECT * FROM businesses ORDER BY num_members DESC");
         res.send(allBusinesses.rows);
     } catch (error) {
