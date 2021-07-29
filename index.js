@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());//allows us to use request.body and get json data
 app.use(fileUpload())
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     next();
   });
 
