@@ -30,7 +30,7 @@ app.post("/becomeMember/", async (req, res) => {
         const query = await pool.query("INSERT INTO members (email, business) VALUES ($1, $2)", [email, business])
 
 
-        res.json("business added to membership")
+        res.send("business added to membership")
     } catch (error) {
         console.error(error.message)
     }
@@ -43,7 +43,7 @@ app.get("/members/:email", async (req, res) => {
         const {email} = req.params
         const query = await pool.query("SELECT business FROM members WHERE email=$1", [email])
 
-        res.json(query.rows)
+        res.send(query.rows)
     } catch (error) {
         console.log(error.message)
     }
@@ -56,7 +56,7 @@ app.get("/allMembers/:business", async (req, res) => {
         const {business} = req.params
 
         const query = await pool.query("SELECT email FROM members WHERE business=$1", [business])
-        res.json(query.rows)
+        res.send(query.rows)
     } catch (error) {
         console.log(error.message)
     }
