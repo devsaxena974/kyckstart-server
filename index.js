@@ -231,7 +231,7 @@ app.get("/businesses/:email", async(req, res) => {
         const {email} = req.params
         const getEmailBusiness = await pool.query("SELECT * FROM businesses WHERE email=$1", [email])
 
-        res.json(getEmailBusiness.rows)
+        res.send(getEmailBusiness.rows)
     } catch (error) {
         console.error(error.message)
     }
@@ -247,7 +247,7 @@ app.put("/businesses/editName/:email", async(req,res) => {
         const updateBusiness = await pool.query("UPDATE businesses SET name=$1 WHERE email=$2",
         [name, email])
 
-        res.json("Business was updated")
+        res.send("Business was updated")
 
     } catch (error) {
         console.error(error.message)
@@ -264,7 +264,7 @@ app.put("/businesses/editType/:email", async(req,res) => {
         const updateBusiness = await pool.query("UPDATE businesses SET type=$1 WHERE email=$2",
         [type, email])
 
-        res.json("Business was updated")
+        res.send("Business was updated")
 
     } catch (error) {
         console.error(error.message)
@@ -281,7 +281,7 @@ app.put("/businesses/editDescription/:email", async(req,res) => {
         const updateBusiness = await pool.query("UPDATE businesses SET description=$1 WHERE email=$2",
         [description, email])
 
-        res.json("Business was updated")
+        res.send("Business was updated")
 
     } catch (error) {
         console.error(error.message)
@@ -298,7 +298,7 @@ app.put("/businesses/editWebsite/:email", async(req,res) => {
         const updateBusiness = await pool.query("UPDATE businesses SET website=$1 WHERE email=$2",
         [description, email])
 
-        res.json("Business was updated")
+        res.send("Business was updated")
 
     } catch (error) {
         console.error(error.message)
@@ -313,7 +313,7 @@ app.delete("/businesses/:id", async(req,res) => {
         const {id} = req.params
         const deleteBusiness = await pool.query("DELETE FROM businesses WHERE id=$1", [id])
 
-        res.json("Business was deleted.")
+        res.send("Business was deleted.")
 
     } catch (error) {
         console.error(error.message)
