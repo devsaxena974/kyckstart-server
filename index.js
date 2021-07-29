@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());//allows us to use request.body and get json data
 app.use(fileUpload())
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    next();
+  });
 
 
 
@@ -179,6 +183,7 @@ app.get("business/getImage/:email", async(req, res) => {
 
 app.get("/businesses", async(req, res) => {
     try {
+        // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
         const allBusinesses = await pool.query("SELECT * FROM businesses ORDER BY num_members DESC");
         res.send(allBusinesses.rows);
     } catch (error) {
