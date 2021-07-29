@@ -71,7 +71,7 @@ app.get("/members/:email/:business", async (req, res) => {
 
         const query = await pool.query("SELECT business FROM members WHERE email=$1 AND business=$2", [email, business])
 
-        res.json(query.rows)
+        res.send(query.rows)
     } catch (error) {
         console.log(error.message)
     }
@@ -83,7 +83,7 @@ app.delete("/deleteMembership/:email/:business", async (req, res) => {
         const {business} = req.params
 
         const query = await pool.query("DELETE FROM members WHERE email=$1 AND business=$2", [email, business])
-        res.json("Membership was deleted")
+        res.send("Membership was deleted")
     } catch (error) {
         console.log(error.message)
     }
@@ -111,7 +111,7 @@ app.get("/users/:email", async (req, res) => {
         const {email} = req.params
         const query = await pool.query("SELECT user_type FROM users WHERE email=$1", [email])
 
-        res.json(query.rows)
+        res.send(query.rows)
     } catch (error) {
         console.error(error.message)
     }
@@ -137,7 +137,7 @@ app.post("/businesses", async(req, res) => {
             "INSERT INTO businesses (name, type, phone, address, city, state, country, email, description, image_path, website) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
             [name, type, phone, address, city, state, country, email, description, imgPath, website])
         
-        res.json("business was created")
+        res.send("business was created")
         //post user type into users table:
         // const user_type = 'business_owner'
         // const newUser = pool.query("INSERT INTO users (email, type) VALUES ($1, $2)", [email, user_type])
@@ -150,7 +150,7 @@ app.post("/businesses", async(req, res) => {
 
 app.post("/uploadImage", (req, res) => {
     if(req.files === null) {
-        return res.json({ msg: 'No file was uploaded' })
+        return res.send({ msg: 'No file was uploaded' })
     }
 
     const file = req.files.file;
@@ -161,7 +161,7 @@ app.post("/uploadImage", (req, res) => {
             return res.status(500).send();
         }
 
-        return res.json({ fileName: file.name, filePath: `/uploads/${file.name}` })
+        return res.send({ fileName: file.name, filePath: `/uploads/${file.name}` })
     })
 })
 
@@ -191,7 +191,7 @@ app.get("/businesses/getMembersByName/:name", async(req, res) => {
     try {
         const {name} = req.params
         const getBusinessByName = await pool.query("SELECT num_members FROM businesses WHERE name=$1", [name])
-        res.json(getBusinessByName.rows)
+        res.send(getBusinessByName.rows)
     } catch (error) {
         console.log(error.message)
     }
@@ -206,7 +206,7 @@ app.put("/businesses/updateMembersByName/:name", async(req, res) => {
 
         const updateNumMembers = await pool.query("UPDATE businesses SET num_members = num_members + 1 WHERE name=$1", [name])
 
-        res.json("Number of members was updated")
+        res.send("Number of members was updated")
     } catch (error) {
         console.log(error.message)
     }
@@ -218,7 +218,7 @@ app.put("/businesses/removeMembersByName/:name", async (req, res) => {
         const {name} = req.params
 
         const query = await pool.query("UPDATE businesses SET num_members = num_members - 1 WHERE name = $1", [name])
-        res.json("Business # of members was updated successfully")
+        res.send("Business # of members was updated successfully")
     } catch (error) {
         console.log(error.message)
     }
