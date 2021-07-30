@@ -10,11 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());//allows us to use request.body and get json data
 app.use(fileUpload())
-app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000/");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+
 
 
 
