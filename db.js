@@ -19,6 +19,6 @@ const prodConfig = new Client({
 
 
 
-const pool = new Pool(prodConfig)
+const pool = new Pool(devConfig)
 
 module.exports = pool
