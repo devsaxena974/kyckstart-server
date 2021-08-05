@@ -128,7 +128,7 @@ app.post("/newUser", async(req,res) => {
 app.get("/users/:email", async (req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("SELECT user_type FROM users WHERE email=$1", [email])
+        const query = await client.query("SELECT user_type FROM users WHERE email=$1", [email])
 
         res.send(query.rows)
     } catch (error) {
