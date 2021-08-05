@@ -4,6 +4,7 @@ const cors = require("cors");
 const pool = require("./db");
 const fileUpload = require('express-fileupload')
 const path = require("path");
+require('dotenv').config()
 const PORT = process.env.PORT || 5000;
 
 //middleware
@@ -12,6 +13,28 @@ app.use(express.json());//allows us to use request.body and get json data
 app.use(fileUpload())
 
 
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+client.connect();
+
+const getBusinesses = (request, response) => {
+    
+    client.query('SELECT * FROM businesses;', (err, res) => {
+        if (err) throw err;
+        response.json(res.rows)
+        for (let row of res.rows) {
+          console.log(JSON.stringify(row));
+        }
+        
+    });
+}
 
 
 //ROUTES//
@@ -173,15 +196,17 @@ app.get("business/getImage/:email", async(req, res) => {
 
 // get all businesses
 
-app.get("/businesses", async(req, res) => {
-    try {
-        // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000/')
-        const allBusinesses = await pool.query("SELECT * FROM businesses ORDER BY num_members DESC");
-        res.send(allBusinesses.rows);
-    } catch (error) {
-        console.error(error.message);
-    }
-});
+// app.get("/businesses", async(req, res) => {
+//     try {
+//         // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000/')
+//         const allBusinesses = await pool.query("SELECT * FROM businesses ORDER BY num_members DESC");
+//         res.send(allBusinesses.rows);
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// });
+
+app.route('/businesses').get(getBusinesses)
 
 //get number of members in a business by name:
 app.get("/businesses/getMembersByName/:name", async(req, res) => {
