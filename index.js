@@ -46,7 +46,7 @@ app.post("/becomeMember/", async (req, res) => {
         const {email} = req.body
         const {business} = req.body
 
-        const query = await pool.query("INSERT INTO members (email, business) VALUES ($1, $2)", [email, business])
+        const query = await client.query("INSERT INTO members (email, business) VALUES ($1, $2)", [email, business])
 
 
         res.send("business added to membership")
@@ -60,7 +60,7 @@ app.post("/becomeMember/", async (req, res) => {
 app.get("/members/:email", async (req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("SELECT business FROM members WHERE email=$1", [email])
+        const query = await client.query("SELECT business FROM members WHERE email=$1", [email])
 
         res.send(query.rows)
     } catch (error) {
@@ -74,7 +74,7 @@ app.get("/allMembers/:business", async (req, res) => {
     try {
         const {business} = req.params
 
-        const query = await pool.query("SELECT email FROM members WHERE business=$1", [business])
+        const query = await client.query("SELECT email FROM members WHERE business=$1", [business])
         res.send(query.rows)
     } catch (error) {
         console.log(error.message)
@@ -88,7 +88,7 @@ app.get("/members/:email/:business", async (req, res) => {
         const {email} = req.params
         const {business} = req.params
 
-        const query = await pool.query("SELECT business FROM members WHERE email=$1 AND business=$2", [email, business])
+        const query = await client.query("SELECT business FROM members WHERE email=$1 AND business=$2", [email, business])
 
         res.send(query.rows)
     } catch (error) {
@@ -101,7 +101,7 @@ app.delete("/deleteMembership/:email/:business", async (req, res) => {
         const {email} = req.params
         const {business} = req.params
 
-        const query = await pool.query("DELETE FROM members WHERE email=$1 AND business=$2", [email, business])
+        const query = await client.query("DELETE FROM members WHERE email=$1 AND business=$2", [email, business])
         res.send("Membership was deleted")
     } catch (error) {
         console.log(error.message)
@@ -115,7 +115,7 @@ app.post("/newUser", async(req,res) => {
         const {email} = req.body
         const {user_type} = req.body
 
-        const addUser = await pool.query("INSERT INTO users (email, user_type) VALUES ($1, $2)", [email, user_type])
+        const addUser = await client.query("INSERT INTO users (email, user_type) VALUES ($1, $2)", [email, user_type])
 
         
     } catch (error) {
@@ -152,7 +152,7 @@ app.post("/businesses", async(req, res) => {
         const {imgPath} = req.body
         const {website} = req.body
        
-        const newBusiness = await pool.query(
+        const newBusiness = await client.query(
             "INSERT INTO businesses (name, type, phone, address, city, state, country, email, description, image_path, website) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
             [name, type, phone, address, city, state, country, email, description, imgPath, website])
         
@@ -188,7 +188,7 @@ app.post("/uploadImage", (req, res) => {
 app.get("business/getImage/:email", async(req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("SELECT image_path FROM businesses WHERE email=$1", [email])
+        const query = await client.query("SELECT image_path FROM businesses WHERE email=$1", [email])
     } catch (error) {
         console.error(error.message)
     }
@@ -212,7 +212,7 @@ app.route('/businesses').get(getBusinesses)
 app.get("/businesses/getMembersByName/:name", async(req, res) => {
     try {
         const {name} = req.params
-        const getBusinessByName = await pool.query("SELECT num_members FROM businesses WHERE name=$1", [name])
+        const getBusinessByName = await client.query("SELECT num_members FROM businesses WHERE name=$1", [name])
         res.send(getBusinessByName.rows)
     } catch (error) {
         console.log(error.message)
@@ -226,7 +226,7 @@ app.put("/businesses/updateMembersByName/:name", async(req, res) => {
         const {updatedNumber} = req.body
         
 
-        const updateNumMembers = await pool.query("UPDATE businesses SET num_members = num_members + 1 WHERE name=$1", [name])
+        const updateNumMembers = await client.query("UPDATE businesses SET num_members = num_members + 1 WHERE name=$1", [name])
 
         res.send("Number of members was updated")
     } catch (error) {
@@ -239,7 +239,7 @@ app.put("/businesses/removeMembersByName/:name", async (req, res) => {
     try {
         const {name} = req.params
 
-        const query = await pool.query("UPDATE businesses SET num_members = num_members - 1 WHERE name = $1", [name])
+        const query = await client.query("UPDATE businesses SET num_members = num_members - 1 WHERE name = $1", [name])
         res.send("Business # of members was updated successfully")
     } catch (error) {
         console.log(error.message)
@@ -251,7 +251,7 @@ app.put("/businesses/removeMembersByName/:name", async (req, res) => {
 app.get("/businesses/:email", async(req, res) => {
     try {
         const {email} = req.params
-        const getEmailBusiness = await pool.query("SELECT * FROM businesses WHERE email=$1", [email])
+        const getEmailBusiness = await client.query("SELECT * FROM businesses WHERE email=$1", [email])
 
         res.send(getEmailBusiness.rows)
     } catch (error) {
@@ -266,7 +266,7 @@ app.put("/businesses/editName/:email", async(req,res) => {
         
         const {email} = req.params
         const {name} = req.body
-        const updateBusiness = await pool.query("UPDATE businesses SET name=$1 WHERE email=$2",
+        const updateBusiness = await client.query("UPDATE businesses SET name=$1 WHERE email=$2",
         [name, email])
 
         res.send("Business was updated")
@@ -283,7 +283,7 @@ app.put("/businesses/editType/:email", async(req,res) => {
         
         const {email} = req.params
         const {type} = req.body
-        const updateBusiness = await pool.query("UPDATE businesses SET type=$1 WHERE email=$2",
+        const updateBusiness = await client.query("UPDATE businesses SET type=$1 WHERE email=$2",
         [type, email])
 
         res.send("Business was updated")
@@ -300,7 +300,7 @@ app.put("/businesses/editDescription/:email", async(req,res) => {
         
         const {email} = req.params
         const {description} = req.body
-        const updateBusiness = await pool.query("UPDATE businesses SET description=$1 WHERE email=$2",
+        const updateBusiness = await client.query("UPDATE businesses SET description=$1 WHERE email=$2",
         [description, email])
 
         res.send("Business was updated")
@@ -317,7 +317,7 @@ app.put("/businesses/editWebsite/:email", async(req,res) => {
         
         const {email} = req.params
         const {website} = req.body
-        const updateBusiness = await pool.query("UPDATE businesses SET website=$1 WHERE email=$2",
+        const updateBusiness = await client.query("UPDATE businesses SET website=$1 WHERE email=$2",
         [description, email])
 
         res.send("Business was updated")
@@ -333,7 +333,7 @@ app.delete("/businesses/:id", async(req,res) => {
     try {
         
         const {id} = req.params
-        const deleteBusiness = await pool.query("DELETE FROM businesses WHERE id=$1", [id])
+        const deleteBusiness = await client.query("DELETE FROM businesses WHERE id=$1", [id])
 
         res.send("Business was deleted.")
 
