@@ -174,7 +174,7 @@ app.post("/uploadImage", (req, res) => {
 
     const file = req.files.file;
 
-    file.mv(`C:/Users/Devanshu Saxena/kyckstart/public/uploads/${file.name}`, err => {
+    file.mv(`C:/kyckstart-client/kyckstart/public/uploads/${file.name}`, err => {
         if(err) {
             console.error(err)
             return res.status(500).send();
