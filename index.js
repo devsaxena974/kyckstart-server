@@ -180,7 +180,7 @@ app.post("/uploadImage", (req, res) => {
             return res.status(500).send();
         }
 
-        return res.send({ fileName: file.name, filePath: `/uploads/${file.name}` })
+        return res.send({ fileName: file.name, filePath: `C:/kyckstart-client/kyckstart/public/uploads/${file.name}` })
     })
 })
 
