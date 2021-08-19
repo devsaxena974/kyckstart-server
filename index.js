@@ -209,10 +209,10 @@ app.get("business/getImage/:email", async(req, res) => {
 app.route('/businesses').get(getBusinesses)
 
 //get number of members in a business by name:
-app.get("/businesses/getMembersByName/:name", async(req, res) => {
+app.get("/businesses/getMembersByName/:business", async(req, res) => {
     try {
-        const {name} = req.params
-        const getBusinessByName = await client.query("SELECT num_members FROM businesses WHERE name=$1", [name])
+        const {business} = req.params
+        const getBusinessByName = await client.query("SELECT num_members FROM businesses WHERE name=$1", [business])
         res.send(getBusinessByName.rows)
     } catch (error) {
         console.log(error.message)
@@ -220,7 +220,7 @@ app.get("/businesses/getMembersByName/:name", async(req, res) => {
 })
 
 //Update Members by business name:
-app.put("/businesses/updateMembersByName/:name", async(req, res) => {
+app.put("/businesses/updateMembersByName/:business", async(req, res) => {
     try {
         const {business} = req.params
 
