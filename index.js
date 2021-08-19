@@ -222,11 +222,9 @@ app.get("/businesses/getMembersByName/:name", async(req, res) => {
 //Update Members by business name:
 app.put("/businesses/updateMembersByName/:name", async(req, res) => {
     try {
-        const {name} = req.params
-        const {updatedNumber} = req.body
-        
+        const {business} = req.params
 
-        const updateNumMembers = await client.query("UPDATE businesses SET num_members = num_members + 1 WHERE name=$1", [name])
+        const updateNumMembers = await client.query("UPDATE businesses SET num_members = num_members + 1 WHERE name=$1", [business])
 
         res.send("Number of members was updated")
     } catch (error) {
